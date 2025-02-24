@@ -2,6 +2,7 @@ package gamesleague;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * GamesLeagueInterface interface. Your submission should include
@@ -13,6 +14,7 @@ import java.io.Serializable;
  * @author Philip Lewis
  * @version 0.2
  */
+
 
 
 public interface GamesLeagueInterface extends Serializable {
@@ -174,10 +176,10 @@ public interface GamesLeagueInterface extends Serializable {
      * Get the date that the user joined the site
      * 
      * @param playerId The ID of the player being queried.
-     * @return epoch day the player joined the site.
+     * @return LocalDate that stores the date the player created their account.
      * @throws IDInvalidException If the ID does not match to any player in the system.
      */
-    double getPlayerJoinDate(int playerId) throws IDInvalidException;
+    LocalDate getPlayerJoinDate(int playerId) throws IDInvalidException;
 
     // Leagues
 
@@ -765,5 +767,8 @@ public interface GamesLeagueInterface extends Serializable {
     void loadGamesLeaguePortal(String filename) throws IOException, ClassNotFoundException;
 
 }
+
+
+
 
 
