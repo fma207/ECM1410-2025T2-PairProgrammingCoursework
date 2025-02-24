@@ -1,114 +1,50 @@
 package gamesleague;
+
 import java.io.IOException;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 /**
- * WordLeaguePortal interface. The no-argument constructor of a class
- * implementing this interface should initialise the GamesLeaguePortal
+ * GamesLeagueInterface interface. Your submission should include
+ * a class GamesLeague that implements this class.
+ * It should include a no-argument constructor that initialises an empty GamesLeague
  * with no initial users or leagues within it.
  * 
  *
  * @author Philip Lewis
- * @version 0.1
- *
+ * @version 0.2
  */
 
-class IDInvalidException; extends RuntimeException {
-    public IDInvalidException;(String m) {
-        super(m);
-    }
-}
 
-
-class IllegalOperationException; extends RuntimeException {
-    public IllegalOperationException;(String m) {
-        super(m);
-    }
-}
-
-class InvalidNameException extends RuntimeException {
-    public InvalidNameException(String m) {
-        super(m);
-    }
-}
-
-class IllegalEmailException extends RuntimeException {
-    public IllegalEmailException(String m) {
-        super(m);
-    }
-}
-
-class InvalidEmailException extends RuntimeException {
-    public InvalidEmailException(String m) {
-        super(m);
-    }
-}
-
-public interface GamesLeaguePortal extends Serializable {
-
-
-    // Time 
-
-    /**
-     * Get the current epoch day. For this test application 
-     * when a GamesLeaguePortal is initialised, the current day value should be set to the
-     * current (real) epoch day, but it may be altered using setCurrentDay
-     * incrementDay methods for testing purposes.
-     * 
-     * @return The current epoch day.
-     */
-    int getCurrentDay();
-
-    /**
-     * set the current epoch day (for testing purposes).
-     *
-     * @param day The current epoch day.
-     * @throws IllegalOperationException If the day is less than current day.
-     */ 
-     void setCurrentDay(int day) throws IllegalOperationException; 
-
-    /**
-     * increment the current epoch day (for testing purposes).
-     *
-     * @param day The current epoch day.
-     */ 
-    void incrementDay(); 
-
+public interface GamesLeagueInterface extends Serializable {
 
     // Players
 
     /**
-    * Get the players currently created in the platform.
-    *
-    * @return An array of player IDs in the system or an empty array if none exists.
-    */
+     * Get the players currently created in the platform.
+     *
+     * @return An array of player IDs in the system or an empty array if none exists.
+     */
     int[] getPlayerIds();
 
 
     /**
-    * Creates a player entry.
-    * <p>
-    * The state of this WordLeaguePortal must be unchanged if any
-    * exceptions are thrown.
-    *
-    * @param name The name of the player.
-    * @param phone The contact phone number of the player or empty string.
-    * @param email The email of the player (unique).
-    * @param displayName The name of the player.
-    * @return The ID of the rider in the system.
-    * @throws InvalidNameException If the displayName or name is null or starts/ends with whitespace, 
-    *                              or if the name is less than 5 characters or more than 50 characters.
-    *                              or if displayName is less than 1 characters or more than 20 characters.
-    * @throws InvalidEmailException If the email is null, empty, or does not contain an '@' character,
-    * @throws IllegalEmailException if it duplicates an existing email of a player
-
-    */
-    int createPlayer(String displayName, String email) 
-        throws  InvalidNameException, 
-                InvalidEmailException,   
-                IllegalEmailException;
+     * Creates a player entry.
+     *
+     * @param email The email of the player (unique).
+     * @param displayName The name of the player.
+     * @param name The name of the player.
+     * @param phone The contact phone number of the player or empty string.
+     * @return The ID of the rider in the system.
+     * @throws InvalidNameException If the displayName or name is null or starts/ends with whitespace, 
+     *                              or if the name is less than 5 characters or more than 50 characters.
+     *                              or if displayName is less than 1 characters or more than 20 characters.
+     * @throws InvalidEmailException If the email is null, empty, or does not contain an '@' character,
+     * @throws IllegalEmailException if it duplicates an existing email of a player
+     */
+    int createPlayer(String email, String displayName, String name, String phone) 
+        throws  InvalidEmailException,   
+                IllegalEmailException,
+                InvalidNameException;
 
 
     /**
@@ -118,9 +54,6 @@ public interface GamesLeaguePortal extends Serializable {
      * i) all personal player anonymised with playerId placeholders
      * ii) all player gameplay reports are set to empty strings
      * iii) player is set to inactive in all league memberships
-     *  
-     * The state of this WordLeaguePortal must be unchanged if any
-     * exceptions are thrown.
      *
      * @param playerId The ID of the player to be deactivated.
      * @throws IDInvalidException If the ID does not match to any player in the system.
@@ -130,18 +63,18 @@ public interface GamesLeaguePortal extends Serializable {
 
 
     /**
-     * check if player has been deactivated.
+     * Check if a player has been deactivated.
+     * 
+     * @param playerId The ID of the player.
+     * @throws IDInvalidException If the ID does not match to any player in the system.
      * 
      * @return true if player has been deactivated or false otherwise 
      */
-    boolean isDeactivatedPlayer();
+    boolean isDeactivatedPlayer(int playerId) throws IDInvalidException;
 
 
     /**
      * Updates the player's display name.
-     * <p>
-     * The state of this WordLeaguePortal must be unchanged if any
-     * exceptions are thrown.
      * 
      * @param playerId The ID of the player to be updated.
      * @param displayName The new display name of the player.
@@ -150,15 +83,15 @@ public interface GamesLeaguePortal extends Serializable {
      *                              is less than 1 characters or more than 20 characters.
      */
     void updatePlayerDisplayName(int playerId, String displayName) 
-        throws  IDInvalidException, 
-                InvalidNameException;
+    throws  IDInvalidException, 
+    InvalidNameException;
 
     /**
-    * Get the player id from the email.
-    *
-    * @param email The email of the player.
-    * @return The ID of the player in the system or null if the player does not exist.
-    */
+     * Get the player id from the email.
+     *
+     * @param email The email of the player.
+     * @return The ID of the player in the system or null if the player does not exist.
+     */
     int getPlayerId(String email);
 
 
@@ -184,38 +117,38 @@ public interface GamesLeaguePortal extends Serializable {
     String getPlayerEmail(int playerId) throws IDInvalidException;
 
 
-    /*
+
+
+    /**
      * Get the in progress leagues a player is currently a member.
      * 
      * @param playerId The ID of the player being queried.
      * @return An array of league IDs the player is in or an empty array if none exists.
      * @throws IDInvalidException If the ID does not match to any player in the system.
      */
+    int[] getPlayerLeagues(int playerId) throws IDInvalidException;
 
-     int[] getPlayerLeagues(int playerId) throws IDInvalidException;
 
-
-    /* 
+    /** 
      * Get the leagues a player owns.
      * 
      * @param playerId The ID of the player being queried.
      * @return An array of league IDs the player owns or an empty array if none exists.
      * @throws IDInvalidException If the ID does not match to any player in the system.
      */
+    int[] getPlayerOwnedLeagues(int playerId) throws IDInvalidException;
 
-     int[] getPlayerOwnedLeagues(int playerId) throws IDInvalidException;
-
-    /*
+    /**
      * Get the user's invites
      * 
      * @param playerId The ID of the player being queried.
      * @return An array of league IDs the player has invites to or an empty array if none exists.
      * @throws IDInvalidException If the ID does not match to any player in the system.
      */
+    int[] getPlayerInvites(int playerId) throws IDInvalidException;
 
-     int[] getPlayerInvites(int playerId) throws IDInvalidException;
 
-    /*
+    /**
      * Get the user's rounds played game stat across all leagues
      * (includes closed/removed leagues)
      * 
@@ -223,29 +156,36 @@ public interface GamesLeaguePortal extends Serializable {
      * @return number of rounds played by the player.
      * @throws IDInvalidException If the ID does not match to any player in the system.
      */
+    int getPlayerRoundsPlayed(int playerId) throws IDInvalidException;
 
-     int getPlayerRoundsPlayed(int playerId) throws IDInvalidException;
 
-
-    /*
-     * Get the user's round participation percentage stat 
-     * across all leagues (includes closed/removed leagues)
+    /**
+     * Get the user's round participation percentage stat
+     *  i.e. if they play all games in all their leagues every day this will be 100
+     *  (includes closed/removed leagues)
      * 
      * @param playerId The ID of the player being queried.
      * @return percentage of rounds (0-100) played by the player across all leagues.
      * @throws IDInvalidException If the ID does not match to any player in the system.
      */
+    double getPlayerRoundsPercentage(int playerId) throws IDInvalidException;
 
-     double getPlayerRoundsPercentage(int playerId) throws IDInvalidException;
-
+    /**
+     * Get the date that the user joined the site
+     * 
+     * @param playerId The ID of the player being queried.
+     * @return epoch day the player joined the site.
+     * @throws IDInvalidException If the ID does not match to any player in the system.
+     */
+    double getPlayerJoinDate(int playerId) throws IDInvalidException;
 
     // Leagues
 
     /**
-    * Get the leagues currently created in the platform.
-    *
-    * @return An array of leagues IDs in the system or an empty array if none exists.
-    */
+     * Get the leagues currently created in the platform.
+     *
+     * @return An array of leagues IDs in the system or an empty array if none exists.
+     */
     int[] getLeagueIds();
 
     /**
@@ -263,7 +203,6 @@ public interface GamesLeaguePortal extends Serializable {
      *                              is less than 1 characters or more than 20 characters.
      * @throws IllegalNameException if it duplicates an existing league name
      */
-
     int createLeague(int owner, String name, GameType gameType ) throws IDInvalidException;
 
     /**
@@ -275,10 +214,9 @@ public interface GamesLeaguePortal extends Serializable {
      * @param leagueId The ID of the league to be removed.
      * @throws IDInvalidException If the ID does not match to any league in the system.
      */
-
     void removeLeague(int leagueId) throws IDInvalidException;
 
-    /*
+    /**
      * Get name of league
      * 
      * @param leagueId The ID of the league being queried.
@@ -286,10 +224,9 @@ public interface GamesLeaguePortal extends Serializable {
      * 
      * @throws IDInvalidException If the ID does not match to any league in the system.
      */
-
     String getLeagueName(int leagueId) throws IDInvalidException;
 
-    /*
+    /**
      * Update the name of a league
      * 
      * @param leagueId The ID of the league to be updated.
@@ -300,11 +237,10 @@ public interface GamesLeaguePortal extends Serializable {
      * @throws IllegalNameException if it duplicates an existing league name.
      * 
      */
-
     void updateLeagueName(int leagueId, String newName) 
         throws IDInvalidException, 
-               InvalidNameException, 
-               IllegalNameException;
+                InvalidNameException, 
+                IllegalNameException;
 
 
     /**
@@ -316,79 +252,60 @@ public interface GamesLeaguePortal extends Serializable {
      * @throws IDInvalidException If the ID does not match to any league or player in the system.
      * @throws InvalidEmailException If the email is null, empty, or does not contain an '@' character.
      */
-
     void invitePlayerToLeague(int leagueId, String email) throws IDInvalidException, InvalidEmailException;
 
     /**
      * Accepts an invite to a league.
-     * <p>
-     * The state of this WordLeaguePortal must be unchanged if any
-     * exceptions are thrown.
      *
      * @param leagueId The ID of the league to accept the invite to.
      * @throws IDInvalidException If the ID does not match to any league or player in the system.
      */
-
     void acceptInviteToLeague(int leagueId) throws IDInvalidException;
 
-    /*
+    /**
      * Removes invite from league
-     * 
-     * <p>
      * 
      * @param leagueId The ID of the league to remove the invite from.
      * @param email The email of the player to remove the invite from.
      * @throws IDInvalidException If the ID does not match to any league or player in the system.
      * @throws IllegalEmailException If the email does not have an active invitation.
      */
-
     void removeInviteFromLeague(int leagueId, String email) 
         throws IDInvalidException, IllegalEmailException;
 
 
-    /*
+    /**
      * Get league invitations for non-existing players (email addresses)
      * 
      * @param leagueId The ID of the league being queried.
      * @return An array of email addresses of players with pending invites or an empty array if none exists.
      * @throws IDInvalidException If the ID does not match to any league in the system.
      */
-
     String[] getLeagueEmailInvites(int leagueId) throws IDInvalidException;
 
 
-    /*
+    /**
      * Get league invitations made to existing players (player IDs)
      * 
      * @param leagueId The ID of the league being queried.
      * @return An array of player IDs who have pending invites or an empty array if none exists.
      * @throws IDInvalidException If the ID does not match to any league in the system.
      */
-
-     Int[] getLeaguePlayerInvites(int leagueId) throws IDInvalidException;
+    int[] getLeaguePlayerInvites(int leagueId) throws IDInvalidException;
 
 
     /**
-     * Get the players in a league.
+     * Get the players in a league. The order of players should be the user that created the league,
+     * (i.e. original owner), followed by other players in the order they accepted the league invitations.
      * 
      * @param leagueId The ID of the league being queried.
      * @return An array of player IDs in the league or an empty array if none exists.
      * @throws IDInvalidException If the ID does not match to any league in the system.
      */
-
     int[] getLeaguePlayers(int leagueId) throws IDInvalidException;
 
 
     /**
-     * Check if league player is set to inactivate.
-     * 
-     * @param leagueId The ID of the league being queried.
-     * @return true if player is inactivate in league or false otherwise 
-     * @throws IDInvalidException If the ID does not match to any league in the system.
-     */
-     boolean isInactivePlayer(int leagueId) throws IDInvalidException;
-
-    /*
      * Get the owners of a league.
      * 
      * @param leagueId The ID of the league being queried.
@@ -397,9 +314,8 @@ public interface GamesLeaguePortal extends Serializable {
      */
     int[] getLeagueOwners(int leagueId) throws IDInvalidException;
 
-    /*
+    /**
      * Get the status of a league 
-     * 
      * 
      * @param leagueId The ID of the league being queried.
      * @param day The epoch day being queried.
@@ -414,26 +330,26 @@ public interface GamesLeaguePortal extends Serializable {
     Status getLeagueStatus(int leagueId ) throws IDInvalidException;
 
 
-    /*
+    /**
      * Start league
      *
      * @param leagueId The ID of the league to start.
-     * @param currentDay Should be set to the current epoch day.
+     * @param day Should be set to the epoch day when league will be made active.
      * @throws IDInvalidException If the ID does not match to any league in the system.
-     * @thows InvalidLeagueStateException If the league is already started.
+     * @thows IllegalOperationException If the league is already started.
      */
-    void startLeague(int leagueId ) throws IDInvalidException, InvalidLeagueStateException;
+    void setLeagueStartDate(int leagueId, int  day) throws IDInvalidException, IllegalOperationException;
 
 
-    /* 
-     * Close league
+    /** 
+     * Close league, day specified may be any date after the league start day
      * 
      * @param leagueId The ID of the league to close.
-     * @param currentDay Should be set to the current epoch day.
+     * @param day Should be set to the epoch day when league will be closed.
      * @throws IDInvalidException If the ID does not match to any league in the system.
-     * @throws InvalidLeagueStateException If the league is already closed.
+     * @throws IllegalOperationException If the league is already closed or invalid day.
      */
-    void closeLeague(int leagueId) throws IDInvalidException;
+    void setLeagueEndDate(int leagueId) throws IDInvalidException;
 
 
     /**
@@ -443,7 +359,7 @@ public interface GamesLeaguePortal extends Serializable {
      * @return The start date of the league as epoch day.
      * @throws IDInvalidException If the ID does not match to any league in the system.
      */
-     int getLeagueStartDate(int leagueId) throws IDInvalidException;
+    int getLeagueStartDate(int leagueId) throws IDInvalidException;
 
 
     /**
@@ -456,7 +372,7 @@ public interface GamesLeaguePortal extends Serializable {
     int getLeagueCloseDate(int leagueId) throws IDInvalidException;
 
 
-    /*
+    /**
      * Reset league by removing all gameplay history i.e. no scores, and gives it pending status. 
      * status of active/inactive players is unchanged.
      * 
@@ -466,8 +382,8 @@ public interface GamesLeaguePortal extends Serializable {
      */
     void resetLeague(int leagueId) throws IDInvalidException;
 
-    
-    /*
+
+    /**
      * Clone a league to make a new league. 
      * Owners of the original league are also owners of the new league.
      * Invitations are created for all players in the original league.
@@ -482,7 +398,7 @@ public interface GamesLeaguePortal extends Serializable {
     int cloneLeague(int leagueId, String newName) throws IDInvalidException;
 
 
-    /* 
+    /**
      * Checks if player is active in the league.
      * 
      * @param leagueId The ID of the league.
@@ -491,10 +407,10 @@ public interface GamesLeaguePortal extends Serializable {
      * @throws IDInvalidException If the ID does not match to any league or player in the system.
      * @throws IllegalOperationException If the ID does not match to any player in the league.
      */
-    bool isLeaguePlayerActive(int leagueId, int playerId) 
+    boolean isLeaguePlayerActive(int leagueId, int playerId) 
         throws IDInvalidException, IllegalArgumentException;
 
-    /* 
+    /** 
      * Sets a player to be registered as inactive in the league.
      * 
      * @param leagueId The ID of the league.
@@ -506,7 +422,7 @@ public interface GamesLeaguePortal extends Serializable {
     void setLeaguePlayerInactive(int leagueId, int playerId) 
         throws IDInvalidException, IllegalArgumentException;
 
-    /* 
+    /** 
      * Sets a player to be registered as active in the league.
      * 
      * @param leagueId The ID of the league.
@@ -519,7 +435,7 @@ public interface GamesLeaguePortal extends Serializable {
         throws IDInvalidException, IllegalArgumentException;
 
 
-    /* 
+    /** 
      * Add owner   
      * 
      * @param leagueId The ID of the league to add the owner to.
@@ -529,10 +445,9 @@ public interface GamesLeaguePortal extends Serializable {
      * @throws IllegalOperationException If the player is not a member of the league.
      * 
      */
-
     void addOwner(int leagueId, int playerId) throws IDInvalidException, IllegalOperationException;
 
-    /* 
+    /** 
      * Remove owner
      * 
      * @param leagueId The ID of the league to remove the owner from.
@@ -542,14 +457,12 @@ public interface GamesLeaguePortal extends Serializable {
      * @throws IllegalOperationException If the process would leave the league without an owner.
      * 
      */
-
     void removeOwner(int leagueId, int playerId) throws IDInvalidException, IllegalOperationException;
-
 
 
     // Results
 
-    /*
+    /**
      * Register a gameplay by a player in a league.
      * 
      * @param leagueId The ID of the league being queried.
@@ -558,15 +471,14 @@ public interface GamesLeaguePortal extends Serializable {
      * @param gameReport A report detailing the gameplay, may be empty if no report made,
      *                   this may be updated e.g. after other players take actions that affect result
      *
-     * @IllegalArgumentException If the day is not a valid day for the league.
      * @throws IDInvalidException If ID do not match to any league & player in the system.
-     * 
+     * @throws IllegalOperationException If the day is not a valid day for the league.
      */
-    void registerGameReport(int day, int leagueId,  int playerId, String gameReport) 
-        throws IDInvalidException, IllegalArgumentException;
+    void registerGameReport(GameDate day, int leagueId,  int playerId, String gameReport) 
+        throws IDInvalidException, IllegalOperationException;
 
 
-    /* 
+    /** 
      * Get the game report for a player in a league.
      * 
      * @param leagueId The ID of the league being queried.
@@ -578,41 +490,40 @@ public interface GamesLeaguePortal extends Serializable {
      * @throws IDInvalidException If the ID does not match to any league in the system.
      * @throws InvalidDateException If the day is not a valid day for the league.
      */
+    String getGameReport(int day, int leagueId,  int playerId) 
+        throws IDInvalidException, InvalidDateException;
 
-    String getGameReport(int day, int leagueId,  int playerId) throws IDInvalidException, InvalidDateException;
-
-    /*
+    /**
      * Register day results. Will be called when all play in a round is complete.
+     * with scored ordered to match player array returned by getLeaguePlayers().
      * 
-     * @param leagueId The ID of the league being queried.
-     * @param playerId The ID of the player being queried.
      * @param day The epoch day the game was played.
-     * @param scores The score of the game for the players (in order of player ID).
+     * @param leagueId The ID of the league being queried.
+     * @param scores The game scores with order to match the array returned by getLeaguePlayers().
      * @throws IDInvalidException If the ID does not match to any league in the system.
      * @throws IllegalArgumentException If the day specified has already been closed,
-     *                                 or if current date is 2 days or more after the day being voided.
+     *                                  or if current date is 2 days or more after the day being voided.
      */
     void registerDayResults(int day, int leagueId, int[] scores) 
-        throws IDInvalidException, InvalidDateException;
+        throws IDInvalidException, IllegalArgumentException;
 
-    /*
-    * Register a void day for a league - all scores set to zero
-    *
-    * @param leagueId The ID of the league being queried.
-    * @param day The epoch day being queried.
-    * @throws IDInvalidException If the ID does not match to any league in the system.
-    * @throws InvalidDateException If the day is not a valid day for the league,
-    *                              or the current day is 2 days or more after the day being voided.
-    */
 
+    /**
+     * Register a void day for a league - all scores set to zero
+     *
+     * @param leagueId The ID of the league being queried.
+     * @param day The epoch day being queried.
+     * @throws IDInvalidException If the ID does not match to any league in the system.
+     * @throws IllegalArgumentException If the day is not a valid day for the league,
+     *                                  or the current day is 2 days or more after the day being voided.
+     */
     void voidDayResults(int day, int leagueId) 
-        throws IDInvalidException, InvalidDateException;
+        throws IDInvalidException, IllegalArgumentException; 
+            
 
 
-
-    /*
+    /**
      * Get the status of a league for a given day.
-     * 
      * 
      * @param leagueId The ID of the league being queried.
      * @param day The epoch day being queried.
@@ -623,15 +534,16 @@ public interface GamesLeaguePortal extends Serializable {
      *          CLOSED        ended (all active players played or day ended)     
      *  
      * @throws IDInvalidException If the ID does not match to any league in the system.
-     *         InvalidDateException If the day is not a valid day for the league.
+     * @throws InvalidDateException If the day is not a valid day for the league.
      */
-     Status getDayStatus(int leagueId, int day ) 
+    Status getDayStatus(int leagueId, int day ) 
         throws IDInvalidException, InvalidDateException;
 
 
-    /*
+    /**
      * Get the scores of a league for a given day.
-     * 
+     * with results ordered to match player array returned by getLeaguePlayers().
+     *
      * @param leagueId The ID of the league being queried.
      * @param day The epoch day being queried.
      * 
@@ -641,34 +553,32 @@ public interface GamesLeaguePortal extends Serializable {
      *          (-1 indicates player has gameplay in round, but score is pending )
      *          (0 or greater indicates the score of the player)
      *          
-     * 
      * @throws IDInvalidException If the ID does not match to any league in the system.
-     *         InvalidDateException If the day is not a valid day for the league.
+     * @throws InvalidDateException If the day is not a valid day for the league.
      */
     int[] getDayScores(int leagueId, int day ) 
         throws IDInvalidException, InvalidDateException;
 
 
-    /*
-     * Get the ranking of a league for a given day.
+    /**
+     * Get the player rankings of a league for a given day, 
+     * with results ordered to match player array returned by getLeaguePlayers().
      * 
      * @param leagueId The ID of the league being queried.
      * @param day The epoch day being queried.
      * 
-     * @return An array of the scores for each player from the day 
+     * @return an array containing the rankings of the players
      *         or empty array if rankings not yet available.
      * 
      * @throws IDInvalidException If the ID does not match to any league in the system.
-     *         InvalidDateException If the day is not a valid day for the league.
+     * @throws InvalidDateException If the day is not a valid day for the league.
      */
     int[] getDayRanking(int leagueId, int day ) 
         throws IDInvalidException, InvalidDateException;
 
 
-
-    /*
+    /**
      * Get the status of a league for a given week.
-     * 
      * 
      * @param leagueId  The ID of the league being queried.
      * @param day       Epoch day that is within the week being queried.
@@ -682,44 +592,44 @@ public interface GamesLeaguePortal extends Serializable {
      *         InvalidDateException If the day is not within a valid week for the league.
      */
     Status getWeekStatus(int leagueId, int day ) 
-    throws IDInvalidException, InvalidDateException;
+        throws IDInvalidException, InvalidDateException;
 
 
-   /*
-    * Get the scores of a league for a given week.
-    * 
-    * @param leagueId  The ID of the league being queried.
-    * @param day       Epoch day that is within the week being queried.
-    * 
-    * @return An array of the scores of each players total for the week (or part week played) 
-    *         or empty array if no scores yet.
-    * 
-    * @throws IDInvalidException If the ID does not match to any league in the system.
-    *         InvalidDateException If the day is not within a valid week for the league.
-    */
-   int[] getWeekScores(int leagueId, int day ) 
-       throws IDInvalidException, InvalidDateException;
+    /**
+     * Get the scores of a league for a given week,
+     * with results ordered to match player array returned by getLeaguePlayers().
+     *  
+     * @param leagueId  The ID of the league being queried.
+     * @param day       Epoch day that is within the week being queried.
+     * 
+     * @return An array of the scores of each players total for the week (or part week played) 
+     *         or empty array if no scores yet.
+     * 
+     * @throws IDInvalidException If the ID does not match to any league in the system.
+     *         InvalidDateException If the day is not within a valid week for the league.
+     */
+    int[] getWeekScores(int leagueId, int day ) 
+        throws IDInvalidException, InvalidDateException;
 
 
-   /*
-    * Get the ranking of a league for a given week.
-    * 
-    * @param leagueId  The ID of the league being queried.
-    * @param day       Epoch day that is within the week being queried.
-    * 
-    * @return An array of the rankings of each players for the week (or part week played) 
-    *         or empty array if no rankings yet.
+    /**
+     * Get the ranking of a league for a given week.
+     * with results ordered to match player array returned by getLeaguePlayers().
+     * 
+     * @param leagueId  The ID of the league being queried.
+     * @param day       Epoch day that is within the week being queried.
+     * 
+     * @return An array of the rankings of each players for the week (or part week played) 
+     *         or empty array if no rankings yet.
+     * 
+     * @throws IDInvalidException If the ID does not match to any league in the system.
+     *         InvalidDateException     If the day is not within a valid week for the league.
+     */
+    int[] getWeekRanking(int leagueId, int day ) 
+        throws IDInvalidException, InvalidDateException;
 
-    * 
-    * @throws IDInvalidException If the ID does not match to any league in the system.
-    *         InvalidDateException     If the day is not within a valid week for the league.
-    */
-   int[] getWeekRanking(int leagueId, int day ) 
-       throws IDInvalidException, InvalidDateException;
 
-
-
-    /*
+    /**
      * Get the status of a league for a given month.
      * 
      * 
@@ -734,12 +644,13 @@ public interface GamesLeaguePortal extends Serializable {
      * @throws IDInvalidException If the ID does not match to any league in the system.
      *         InvalidDateException If the day is not within a valid month for the league.
      */
-     Status getMonthStatus(int leagueId, int day ) 
-     throws IDInvalidException, InvalidDateException;
+    Status getMonthStatus(int leagueId, int day ) 
+        throws IDInvalidException, InvalidDateException;
 
 
-    /*
+    /**
      * Get the scores of a league for a given month.
+     * with results ordered to match player array returned by getLeaguePlayers().
      * 
      * @param leagueId  The ID of the league being queried.
      * @param day       Epoch day that is within the month being queried.
@@ -748,13 +659,13 @@ public interface GamesLeaguePortal extends Serializable {
      *         or empty array if no scores yet.
      * 
      * @throws IDInvalidException If the ID does not match to any league in the system.
-     *         InvalidDateException If the day is not within a valid month for the league.
+     * @throws InvalidDateException If the day is not within a valid month for the league.
      */
     int[] getMonthScores(int leagueId, int day ) 
         throws IDInvalidException, InvalidDateException;
 
 
-    /*
+    /**
      * Get the ranking of a league for a given month.
      * 
      * @param leagueId  The ID of the league being queried.
@@ -762,16 +673,15 @@ public interface GamesLeaguePortal extends Serializable {
      * 
      * @return An array of the rankings of each players for the month (or part month played) 
      *         or empty array if no rankings yet.
-
      * 
      * @throws IDInvalidException If the ID does not match to any league in the system.
-     *         InvalidDateException     If the day is not within a valid month for the league.
+     * @throws InvalidDateException     If the day is not within a valid month for the league.
      */
     int[] getMonthRanking(int leagueId, int day ) 
-        throws IDInvalidException, InvalidDateException;
+            throws IDInvalidException, InvalidDateException;
 
 
-    /*
+    /**
      * Get the status of a league for a given year.
      * 
      * 
@@ -784,43 +694,42 @@ public interface GamesLeaguePortal extends Serializable {
      *          CLOSED        ended all games played or year has ended    
      *  
      * @throws IDInvalidException If the ID does not match to any league in the system.
-     *         InvalidDateException If the day is not within a valid month for the league.
+     * @throws InvalidDateException If the day is not within a valid month for the league.
      */
     Status getYearStatus(int leagueId, int day ) 
+            throws IDInvalidException, InvalidDateException;
+
+
+    /**
+     * Get the scores of a league for a given month.
+     * 
+     * @param leagueId  The ID of the league being queried.
+     * @param day       Epoch day that is within the month being queried.
+     * 
+     * @return An array of the scores of each players total for the month (or part month played) 
+     *         or empty array if no scores yet.
+     * 
+     * @throws IDInvalidException If the ID does not match to any league in the system.
+     * @throws InvalidDateException If the day is not within a valid month for the league.
+     */
+    int[] getYearScores(int leagueId, int day ) 
         throws IDInvalidException, InvalidDateException;
 
 
-   /*
-    * Get the scores of a league for a given month.
-    * 
-    * @param leagueId  The ID of the league being queried.
-    * @param day       Epoch day that is within the month being queried.
-    * 
-    * @return An array of the scores of each players total for the month (or part month played) 
-    *         or empty array if no scores yet.
-    * 
-    * @throws IDInvalidException If the ID does not match to any league in the system.
-    *         InvalidDateException If the day is not within a valid month for the league.
-    */
-   int[] getYearScores(int leagueId, int day ) 
-       throws IDInvalidException, InvalidDateException;
-
-
-   /*
-    * Get the ranking of a league for a given month.
-    * 
-    * @param leagueId  The ID of the league being queried.
-    * @param day       Epoch day that is within the month being queried.
-    * 
-    * @return An array of the rankings of each players for the month (or part month played) 
-    *         or empty array if no rankings yet.
-
-    * 
-    * @throws IDInvalidException If the ID does not match to any league in the system.
-    *         InvalidDateException     If the day is not within a valid month for the league.
-    */
-   int[] getYearRanking(int leagueId, int day ) 
-       throws IDInvalidException, InvalidDateException;
+    /**
+     * Get the ranking of a league for a given month.
+     * 
+     * @param leagueId  The ID of the league being queried.
+     * @param day       Epoch day that is within the month being queried.
+     * 
+     * @return An array of the rankings of each players for the month (or part month played) 
+     *         or empty array if no rankings yet.
+     * 
+     * @throws IDInvalidException   If the ID does not match to any league in the system.
+     * @throws InvalidDateException If the day is not within a valid month for the league.
+     **/
+    int[] getYearRanking(int leagueId, int day ) 
+        throws IDInvalidException, InvalidDateException;
 
 
     /**
@@ -831,29 +740,30 @@ public interface GamesLeaguePortal extends Serializable {
 
 
     /**
-    * Method saves this GamesLeaguePortal contents into a serialised file,
-    * with the filename given in the argument.
-    * <p>
-    * The state of this GamesLeaguePortal must be unchanged if any
-    * exceptions are thrown.
-    *
-    * @param filename Location of the file to be saved.
-    * @throws IOException If there is a problem experienced when trying to save the * store contents to the file.
-    */
+     * Method saves this GamesLeaguePortal contents into a serialised file,
+     * with the filename given in the argument.
+     * <p>
+     * The state of this GamesLeaguePortal must be unchanged if any
+     * exceptions are thrown.
+     *
+     * @param filename Location of the file to be saved.
+     * @throws IOException If there is a problem experienced when trying to save the 
+     *                     contents to the file.
+     */
     void saveGamesLeaguePortal(String filename) throws IOException;
-    
+
+
     /**
-    * Method should load and replace this GamesLeaguePortal contents with the
-    * serialised contents stored in the file given in the argument.
-    * <p>
-    * The state of this GamesLeaguePortal must be unchanged if any
-    * exceptions are thrown.
-    *
-    * @param filename Location of the file to be loaded.
-    * @throws IOException If there is a problem experienced when trying
-    *                     to load the store contents from the file.
-    * @throws ClassNotFoundException If required class files cannot be found when * loading.
-    */
+     * Method should load and replace this GamesLeaguePortal contents with the
+     * serialised contents stored in the file given in the argument.
+     *
+     * @param filename Location of the file to be loaded.
+     * @throws IOException If there is a problem experienced when trying
+     *                     to load the store contents from the file.
+     * @throws ClassNotFoundException If required class files cannot be found when loading.
+     */
     void loadGamesLeaguePortal(String filename) throws IOException, ClassNotFoundException;
 
 }
+
+
