@@ -6,3 +6,5 @@ Updated instructions from the draft making several changes. Please reread this d
 ##### `GamesLeagueInterface.java` v0.3
 Some general corrections/fixes with respect to the draft version following some initial discussions with students. Please raise any issues you spot with me by email.
 
+##### `GamesLeagueInterface.java` v0.3.1 and added `GamesLeague.java` skeleton class
+Some minor corrections/fixes. Added a skeleton template you can start with for the GamesLeague class. This implements the interface methods with placeholder return statements. 
